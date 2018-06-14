@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  api:
+    build: . 
+    volumes:
+      - .:/app 
+    env_file: 
+      - .env
+    depends_on: 
+      - mongo
+    ports:
+      - "80:80" 
+    stdin_open: true
+    tty: true
+  mongo: 
+    image: mvertes/alpine-mongo 
+    ports: 
+      - "27017:27017"
+
+    # buildar os containers -> $ docker-compose build
+    # subir os containers sem travar o terminal -> $ docker-compose up -d
+    # listar os containers em pé -> $ docker ps
+    # conectar no cli do mongodb -> $ docker exec -it <id_do_container_do_mongo> mongo
+    # conectar no container do python -> $ docker exec -it <id_do_container_da_api> ash
