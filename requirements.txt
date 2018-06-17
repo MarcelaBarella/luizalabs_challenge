@@ -1,3 +1,4 @@
 Flask
 pymongo
 flask_request_validator
+assertpy

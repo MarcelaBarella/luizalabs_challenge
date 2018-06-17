@@ -1,25 +1,34 @@
-#verificar se so importar o schedule basta
-from database import Schedule, ScheduleQuery
+from datetime import datetime
 
-@app.route("/room/<room_id>/schedule", methods=['POST'])
-def create_schedule(room_id):
-    """ Route to book a room, return the 200 state request if is available.
-    Otherwise will return the """
-    #if request.method == 'POST':
-        try:
-            title = resquest.json['title']
-            capacity = resquest.json['capacity']
+from bson.objectid import ObjectId
 
-            schedule = Schedule(title=title, capacity=capacity)
-            schedule.save()
+from domain.base_entity import BaseEntity
+
+class Schedule(BaseEntity):
+    def __init__(self, data):
+        super(Schedule, self).__init__(data)
+        if not hasattr(self, '_id'):
+            self._id = ObjectId()
+
+        self.set_begin(self.begin)
+        self.set_end(self.end)
+
+        if(self.begin > self.end):
+            raise Exception #colocar uma exception adequada
+
+    def set_begin(self, date):
+        if(type(date) == str):
+            self.begin = datetime.strptime(date, '%d/%m/%Y %H:%M')
+        else:
+            self.begin = date
+
+    def set_end(self, date):
+        if(type(date) == str):
+            self.end = datetime.strptime(date, '%d/%m/%Y %H:%M')
+        else:
+            self.end = date
+
+    def colides_with_other_schedule(self, other):
+        return (self.begin <= other.begin <= self.end) or (other.begin <= self.begin <= other.end)
 
 
-    pass
-
-@app.route("/room/<room_id>/schedule/<schedule_id>", methods=['DELETE'])
-def delete_schedule(room_id, schedule_id):
-    pass
-
-@app.route("/room/<room_id>/schedule/<schedule_id>" methodd=['PUT'])
-def edit_schedule(room_id, schedule_id):
-    pass

@@ -1,13 +1,15 @@
 import os
 
 from flask import (Flask, request)
+from flask.json import jsonify
 from flask_request_validator import (PATH, JSON, validate_params, Param)
 from bson.json_util import dumps
 from pymongo import MongoClient
 
 from services.room_service import RoomService
 from domain.room import Room
-from errors.room_errors import RoomNotFoundError
+from domain.schedule import Schedule
+from errors.room_errors import RoomNotFoundError, RoomAlreadyHasScheduleInGivenPeriodError
 
 app = Flask(__name__)
 database = MongoClient('mongo', 27017).room_scheduler
@@ -38,7 +40,7 @@ def delete_room(room_id):
 def create_room(name, capacity):
     room = Room(request.json)
     room_service.create(room)
-    return ('Room created', 201)
+    return (dumps({'message':'Room created'}), 201)
 
 @app.route("/room/<room_id>", methods=['PUT'])
 @validate_params(
@@ -51,19 +53,25 @@ def edit_room(room_id, name, capacity):
     room.set_id(room_id)
     room_service.edit(room)
     return ('', 204)
+ 
 
 @app.route("/room/<room_id>/schedule", methods=['POST'])
-def create_schedule(room_id):
-    """ Route to book a room, return the 200 state request if is available.
-    Otherwise will return the """
+@validate_params(
+    Param('title', JSON, str),
+    Param('participants', JSON, list),
+    Param('begin', JSON, str),
+    Param('end', JSON, str),
+    Param('room_id', PATH, str)
+)
+def create_schedule(title, participants, begin, end, room_id):
+    schedule = Schedule(request.json)
+    room_service.add_schedule(room_id, schedule)
+    return (dumps({'message':'Created Schedule'}), 201)
 
-    pass
-
-
-#deleta o agendamento de uma sala
-@app.route("/room/<room_id>/schedule/<schedule_id>")
-def delete_schedule(room_id, schedule_id, methods=['DELETE']):
-    pass
+@app.route("/room/<room_id>/schedule/<schedule_id>", methods=['DELETE'])
+def delete_schedule(room_id, schedule_id):
+    room_service.delete_schedule(room_id, schedule_id)
+    return (dumps({'message': 'Schedule deleted'}), 201)
 
 @app.route("/room/")
 def edit_reservation():
@@ -71,17 +79,16 @@ def edit_reservation():
 
 @app.errorhandler(RoomNotFoundError)
 def room_not_found_error_handler(errror):
-    return ('Room not found', 404)
+    return (dumps({'message': 'Room not found'}), 404)
 
-"""room_scheduler  = { 'room_name': 'carrapato',
-                        'capacity': 7,
-                        'schedules' : {
-                            'title': 'squad planning',
-                            'participants': ['Marcela', 'Ricardo', 'Juninho']
-                            'beginning': '14/06/2018-15:00PM',
-                            'end': '14/06/2018-16:30PM'
-                        }
-}"""
+@app.errorhandler(RoomAlreadyHasScheduleInGivenPeriodError)
+def cannot_book_error_handler(error):
+    return (dumps({'message': 'Room is busy in given period. Try other!'}), 406)
+
+@app.after_request
+def after_request(response):
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
     
 # tem que ir pra outro arquivo

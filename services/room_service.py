@@ -7,6 +7,7 @@ sys.path.insert(0,parentdir)
 
 from bson.objectid import ObjectId
 
+from domain.room import Room
 from errors.room_errors import RoomNotFoundError 
 
 class RoomService:
@@ -27,9 +28,19 @@ class RoomService:
         self.collection.save(room.__dict__)
 
     def delete(self, id):
-        room = self.find(id)
+        self.find(id)
         self.collection.remove(ObjectId(id))
 
     def edit(self,room):
         self.find(str(room._id))
         self.collection.update_one({'_id': room._id}, {'$set': room.__dict__}, upsert=False)
+
+    def add_schedule(self, room_id, schedule):
+        room = Room(self.find(str(room_id)))
+        room.add_schedule(schedule)
+        self.edit(room)
+
+    def delete_schedule(self, room_id, schedule_id):
+        room = Room(self.find(str(room_id)))
+        room.remove_schedule(schedule_id)
+        self.edit(room)

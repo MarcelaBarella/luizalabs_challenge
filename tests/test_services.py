@@ -1,5 +1,5 @@
 import unittest
-import assertpy import assert_that
+from assertpy import assert_that
 
 from services import Service
 
