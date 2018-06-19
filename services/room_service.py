@@ -10,6 +10,7 @@ from bson.objectid import ObjectId
 from domain.room import Room
 from errors.room_errors import RoomNotFoundError 
 
+
 class RoomService:
     def __init__(self, collection):
         self.collection = collection
@@ -17,6 +18,7 @@ class RoomService:
     def all(self):
         return list(self.collection.find())
 
+    #abstrair
     def find(self, id):
         room = self.collection.find_one({'_id': ObjectId(id)})
         if not room:
@@ -33,14 +35,7 @@ class RoomService:
 
     def edit(self,room):
         self.find(str(room._id))
-        self.collection.update_one({'_id': room._id}, {'$set': room.__dict__}, upsert=False)
+        self.collection.update_one({'_id': room._id}, 
+                                    {'$set': room.__dict__}, 
+                                    upsert=False)
 
-    def add_schedule(self, room_id, schedule):
-        room = Room(self.find(str(room_id)))
-        room.add_schedule(schedule)
-        self.edit(room)
-
-    def delete_schedule(self, room_id, schedule_id):
-        room = Room(self.find(str(room_id)))
-        room.remove_schedule(schedule_id)
-        self.edit(room)
