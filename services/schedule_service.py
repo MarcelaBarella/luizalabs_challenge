@@ -23,24 +23,36 @@ class ScheduleService:
             {'schedules.$': 1}
         )
         schedule = room['schedules'][0]
-        return schedule
+        return Schedule(schedule)
 
-    def all(self):
-        pass
+    def all(self, room_id, begin=None, end=None):
+        room = Room(self.room_service.find(room_id))
+        if not begin and not end:
+            return room.schedules
+
+        result = []
+        for entry in room.schedules:
+            schedule = Schedule(entry)
+            if begin and begin > schedule.begin:
+                continue
+            if end and end < schedule.end:
+                continue
+            result.append(schedule.__dict__)
+        return result
 
     def add_schedule(self, room_id, schedule):
         room = Room(self.room_service.find(str(room_id)))
-        room.add_schedule(schedule)
+        room.add_schedule(Schedule(schedule))
         self.room_service.edit(room)
 
     def delete(self, room_id, schedule_id):
         room = Room(self.find(str(room_id)))
-        room_collection.remove_schedule(schedule_id)
+        room.remove_schedule(schedule_id)
         self.edit(room)
 
     def edit(self, room_id, schedule_id, title=None, participants=[], begin=None, end=None):
         room = Room(self.room_service.find(room_id))
-        schedule = Schedule(self.find(room_id, schedule_id))
+        schedule = self.find(room_id, schedule_id)
         schedule.title = title or schedule.title
         schedule.participants = participants or schedule.participants
         if begin: schedule.set_begin(begin)

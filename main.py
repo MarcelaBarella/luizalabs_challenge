@@ -1,8 +1,9 @@
 import os
+from datetime import datetime
 
 from flask import (Flask, request)
 from flask.json import jsonify
-from flask_request_validator import (PATH, JSON, validate_params, Param)
+from flask_request_validator import (GET, PATH, JSON, validate_params, Param)
 from bson.json_util import dumps
 from pymongo import MongoClient
 
@@ -57,13 +58,23 @@ def edit_room(room_id, name, capacity):
     return (dumps({'message': 'Edited Room'}), 204)
 
 
+@app.route("/room/<room_id>/schedule", methods=["GET"])
+@validate_params(
+    Param('room_id', PATH, str),
+    Param('begin', GET, str, required=False),
+    Param('end', GET, str, required=False)
+)
+def all_schedules(room_id, begin, end):
+    begin = begin and datetime.strptime(begin, '%d-%m-%Y')
+    end = end and datetime.strptime(end, '%d-%m-%Y')
+
+    schedules = schedule_service.all(room_id, begin, end)
+    return dumps(schedules)
 
 @app.route("/room/<room_id>/schedule/<schedule_id>", methods=["GET"])
 def get_schedule(room_id, schedule_id):
     schedule = schedule_service.find(room_id, schedule_id)
-    import pdb
-    pdb.set_trace()
-    return dumps(schedule)
+    return dumps(schedule.__dict__)
 
 @app.route("/room/<room_id>/schedule", methods=['POST'])
 @validate_params(
