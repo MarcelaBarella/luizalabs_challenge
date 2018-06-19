@@ -93,9 +93,7 @@ def delete_schedule(room_id, schedule_id):
     Param('end', JSON, str, required=False)
 )
 def edit_schedule(room_id, schedule_id, title, participants, begin, end):
-    room = room_service.find(room_id)
-    schedule = schedule_service.find(room_id, schedule_id)
-    schedule_service.edit(room, schedule)
+    schedule_service.edit(room_id, schedule_id, title, participants, begin, end)
     return (dumps({'message': 'Schedule edited'}), 204)
 
 

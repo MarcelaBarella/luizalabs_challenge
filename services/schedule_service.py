@@ -38,15 +38,18 @@ class ScheduleService:
         room_collection.remove_schedule(schedule_id)
         self.edit(room)
 
-    def edit(self, room, schedule, title=None, participants=[], begin=None, end=None):
-        schedule = Schedule(self.find(str(room['_id']), str(schedule['_id'])))
+    def edit(self, room_id, schedule_id, title=None, participants=[], begin=None, end=None):
+        room = Room(self.room_service.find(room_id))
+        schedule = Schedule(self.find(room_id, schedule_id))
         schedule.title = title or schedule.title
         schedule.participants = participants or schedule.participants
         if begin: schedule.set_begin(begin)
         if end: schedule.set_end(end)
-        self.room_collection.update_one({'_id': schedule._id}, 
-                                        {'$set': schedule.__dict__}, 
-                                        upsert=False)
+
+        room.remove_schedule(str(schedule._id))
+        room.add_schedule(schedule)
+
+        self.room_service.edit(room)
 
         
 
