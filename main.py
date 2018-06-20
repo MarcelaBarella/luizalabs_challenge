@@ -34,7 +34,7 @@ def delete_room(room_id):
     room = room_service.delete(room_id)
     return (dumps({'message': 'Room deleted'}), 200)
 
-#Como tratar o erro 500
+
 @app.route("/room", methods=['POST'])
 @validate_params(
     Param('name', JSON, str),
@@ -86,12 +86,12 @@ def get_schedule(room_id, schedule_id):
 )
 def create_schedule(title, participants, begin, end, room_id):
     schedule = Schedule(request.json)
-    schedule_service.add_schedule(room_id, schedule)
+    schedule_service.add(room_id, schedule)
     return (dumps({'message':'Created Schedule'}), 201)
 
 @app.route("/room/<room_id>/schedule/<schedule_id>", methods=['DELETE'])
 def delete_schedule(room_id, schedule_id):
-    schedule_service.delete_schedule(room_id, schedule_id)
+    schedule_service.delete(room_id, schedule_id)
     return (dumps({'message': 'Schedule deleted'}), 201)
 
 @app.route("/room/<room_id>/schedule/<schedule_id>", methods=['PUT'])

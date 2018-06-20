@@ -40,7 +40,7 @@ class ScheduleService:
             result.append(schedule.__dict__)
         return result
 
-    def add_schedule(self, room_id, schedule):
+    def add(self, room_id, schedule):
         room = Room(self.room_service.find(str(room_id)))
         room.add_schedule(Schedule(schedule))
         self.room_service.edit(room)

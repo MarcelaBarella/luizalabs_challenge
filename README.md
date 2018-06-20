@@ -37,6 +37,9 @@ Then connect to the terminal
 After build this solution one time you can also run on the root of your project the command:
 >$ ./run-container.sh
 
+## Usage
+ To see more details about the usage of this API, please read the [USAGE]().
+
 
 ## TODO
 
@@ -44,6 +47,7 @@ After build this solution one time you can also run on the root of your project 
 ⋅⋅* Veirify if the number os participants in a meeting is higher then the capacity of the room
 ⋅⋅* Search a schedule by date
 ⋅⋅* Schearch a room by schedule
+⋅⋅* Correct some broken methods
 
 
 
