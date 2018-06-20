@@ -22,9 +22,7 @@ GET /room
 **cURL** 
 ```
 curl -X GET \
-  http://localhost/room \
-  -H 'Cache-Control: no-cache' \
-  -H 'Postman-Token: ce7e4c90-eb22-4754-a819-b849aba30484'
+  http://localhost/room
 ```
 
 **Reponse**
@@ -65,15 +63,13 @@ Return a schedule searched for it id.
 
 **Request** 
 ```
-GET room/5b292b83d2a3fa00b8290b51
+GET /room/5b292b83d2a3fa00b8290b51
 ```
 
 **cURL** 
 ```
 curl -X GET \
-  http://localhost/room/5b292b83d2a3fa00b8290b51 \
-  -H 'Cache-Control: no-cache' \
-  -H 'Postman-Token: 3b951f3a-da57-44ba-b8e9-a72bd0e2da32'
+  http://localhost/room/5b292b83d2a3fa00b8290b51
 ```
 
 **Reponse**
@@ -114,7 +110,7 @@ PUT /room/5b292b83d2a3fa00b8290b51
 ```
 ```
 
-## Add a Room POST - /room
+## Create new room: POST - /room
 Used to create a room
 
 Currently, the allowed parameters are:
@@ -142,9 +138,7 @@ POST /room
 ```
 curl -X POST \
   http://localhost/room \
-  -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
-  -H 'Postman-Token: 9f271788-a5d9-46f9-b3c2-3c346081159d' \
   -d '{
     "name": "meeting room",
     "capacity": 10,
@@ -170,9 +164,7 @@ DELETE /room/5b29a326d2a3fa003f5992ba
 **cURL**
 ```
 curl -X DELETE \
-  http://localhost/room/5b29a326d2a3fa003f5992ba \
-  -H 'Cache-Control: no-cache' \
-  -H 'Postman-Token: 8d2aa2ad-3d5e-4391-819e-dfc1955deac4'
+  http://localhost/room/5b29a326d2a3fa003f5992ba
 ```
 
 **Response**
@@ -180,7 +172,7 @@ curl -X DELETE \
 200 OK
 ```
 
-## Schedules List: GET - /room/<room_id>/schedule
+## List Schedules: GET - /room/<room_id>/schedule
 Return all the schedules for a given room. Each schedule has the following content:
 
 | Attribute | Type | Description |
@@ -195,15 +187,13 @@ Return all the schedules for a given room. Each schedule has the following conte
 
 **Request** 
 ```
-GET room/5b292b83d2a3fa00b8290b51/schedule
+GET /room/5b292b83d2a3fa00b8290b51/schedule
 ```
 
 **cURL** 
 ```
 curl -X GET \
-  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule \
-  -H 'Cache-Control: no-cache' \
-  -H 'Postman-Token: b1457cc1-84c9-4865-ad7c-166a8b53e814'
+  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule
 ```
 
 **Reponse**
@@ -228,22 +218,20 @@ curl -X GET \
 ]
 ```
 
-## Geting a given schedule: GET - /room/<room_id>/schedule/<schedule_id>
-Return a schedule searched for it id.
+## Retrieve specific schedule: GET - /room/<room_id>/schedule/<schedule_id>
+Retrieve a schedule searched by id.
 
 **Example of usage:**
 
 **Request** 
 ```
-GET room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
+GET /room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
 ```
 
 **cURL** 
 ```
 curl -X GET \
-  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52 \
-  -H 'Cache-Control: no-cache' \
-  -H 'Postman-Token: e14463b2-0d65-421a-89f4-9fa478294cc4'
+  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
 ```
 
 **Reponse**
