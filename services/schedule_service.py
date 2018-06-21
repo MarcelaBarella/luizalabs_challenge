@@ -22,6 +22,10 @@ class ScheduleService:
             {'_id': ObjectId(room_id), 'schedules._id': ObjectId(schedule_id)},
             {'schedules.$': 1}
         )
+
+        if not hasattr(room, 'schedules'):
+            raise ScheduleNotFoundError()
+
         schedule = room['schedules'][0]
         return Schedule(schedule)
 

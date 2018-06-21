@@ -12,6 +12,7 @@ from services.schedule_service  import ScheduleService
 from domain.room import Room
 from domain.schedule import Schedule
 from errors.room_errors import RoomNotFoundError, RoomAlreadyHasScheduleInGivenPeriodError
+from errors.schedule_errors import ScheduleNotFoundError
 
 app = Flask(__name__)
 database = MongoClient('mongo', 27017).room_scheduler
@@ -115,6 +116,14 @@ def room_not_found_error_handler(errror):
 @app.errorhandler(RoomAlreadyHasScheduleInGivenPeriodError)
 def cannot_book_error_handler(error):
     return (dumps({'message': 'This room is busy in this given period. Please, try other!'}), 406)
+
+@app.errorhandler(ScheduleNotFoundError)
+def schedule_not_found_error_handler(error):
+    return (dumps({'message': 'Schedule not found'}), 404)
+
+@app.errorhandler(ValueError)
+def value_error(error):
+    return (dumps({'message': str(error)}), 400)
 
 @app.after_request
 def after_request(response):
