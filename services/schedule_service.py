@@ -25,17 +25,17 @@ class ScheduleService:
         schedule = room['schedules'][0]
         return Schedule(schedule)
 
-    def all(self, room_id, begin=None, end=None):
+    def all(self, room_id, begin_at_or_after=None, begin_at_or_before=None):
         room = Room(self.room_service.find(room_id))
-        if not begin and not end:
+        if not begin_at_or_after and not begin_at_or_before:
             return room.schedules
 
         result = []
         for entry in room.schedules:
             schedule = Schedule(entry)
-            if begin and begin > schedule.begin:
+            if begin_at_or_after and schedule.begin.date() < begin_at_or_after:
                 continue
-            if end and end < schedule.end:
+            if begin_at_or_before and schedule.begin.date() > begin_at_or_before:
                 continue
             result.append(schedule.__dict__)
         return result
@@ -46,9 +46,9 @@ class ScheduleService:
         self.room_service.edit(room)
 
     def delete(self, room_id, schedule_id):
-        room = Room(self.find(str(room_id)))
+        room = Room(self.room_service.find(str(room_id)))
         room.remove_schedule(schedule_id)
-        self.edit(room)
+        self.room_service.edit(room)
 
     def edit(self, room_id, schedule_id, title=None, participants=[], begin=None, end=None):
         room = Room(self.room_service.find(room_id))

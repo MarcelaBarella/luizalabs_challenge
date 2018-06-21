@@ -61,14 +61,14 @@ def edit_room(room_id, name, capacity):
 @app.route("/room/<room_id>/schedule", methods=["GET"])
 @validate_params(
     Param('room_id', PATH, str),
-    Param('begin', GET, str, required=False),
-    Param('end', GET, str, required=False)
+    Param('begin_at_or_after', GET, str, required=False),
+    Param('begin_at_or_before', GET, str, required=False)
 )
-def all_schedules(room_id, begin, end):
-    begin = begin and datetime.strptime(begin, '%d-%m-%Y')
-    end = end and datetime.strptime(end, '%d-%m-%Y')
+def all_schedules(room_id, begin_at_or_after, begin_at_or_before):
+    begin_at_or_after = begin_at_or_after and datetime.strptime(begin_at_or_after, '%d-%m-%Y').date()
+    begin_at_or_before = begin_at_or_before and datetime.strptime(begin_at_or_before, '%d-%m-%Y').date()
 
-    schedules = schedule_service.all(room_id, begin, end)
+    schedules = schedule_service.all(room_id, begin_at_or_after, begin_at_or_before)
     return dumps(schedules)
 
 @app.route("/room/<room_id>/schedule/<schedule_id>", methods=["GET"])
