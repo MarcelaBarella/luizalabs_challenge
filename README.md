@@ -28,14 +28,8 @@ Go to the root of the project
 Build the docker image (this will install all the listed dependencies on requirements)
 >$ docker-compose build
 
-Acess the container bash, who will list all the containers running, the get yout container id
->$ docker ps
-
-Then connect to the terminal
->$ docker exec -it <your_container_id> ash 
-
-After build this solution one time you can also run on the root of your project the command:
->$ ./run-container.sh
+Run app by executing container:  
+>$ docker-compose up
 
 ## Usage
  To see more details about the usage of this API, please read the [USAGE](USAGE.md).

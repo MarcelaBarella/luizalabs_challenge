@@ -31,4 +31,4 @@ COPY . $APP_HOME
 RUN pip install -r requirements.txt
 RUN ash
 
-#CMD ["python", "main.py"]
+CMD ["python", "main.py"]
