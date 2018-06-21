@@ -38,16 +38,14 @@ After build this solution one time you can also run on the root of your project 
 >$ ./run-container.sh
 
 ## Usage
- To see more details about the usage of this API, please read the [USAGE]().
+ To see more details about the usage of this API, please read the [USAGE](USAGE.md).
 
 
-## TODO
+## Improvements
 
-⋅⋅* Consume the API using Jinja templates
-⋅⋅* Veirify if the number os participants in a meeting is higher then the capacity of the room
-⋅⋅* Search a schedule by date
-⋅⋅* Schearch a room by schedule
-⋅⋅* Correct some broken methods
+- Create app to consume this API and expose data to users
+- Check if the number os participants in a meeting is higher then the capacity of the room
+- Search a room by schedule
 
 
 
