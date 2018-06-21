@@ -11,6 +11,11 @@ from domain.base_entity import BaseEntity
 from domain.schedule import Schedule
 
 class Room(BaseEntity):
+    def __init__(self, data=None):
+        super().__init__(data)
+        if not hasattr(self, 'schedules'):
+            self.schedules = []
+
     def add_schedule(self, new_schedule):
         if not hasattr(self, 'schedules'):
             self.schedules = []

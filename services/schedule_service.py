@@ -23,7 +23,7 @@ class ScheduleService:
             {'schedules.$': 1}
         )
 
-        if not hasattr(room, 'schedules'):
+        if not room or not 'schedules' in room:
             raise ScheduleNotFoundError()
 
         schedule = room['schedules'][0]
@@ -46,7 +46,7 @@ class ScheduleService:
 
     def add(self, room_id, schedule):
         room = Room(self.room_service.find(str(room_id)))
-        room.add_schedule(Schedule(schedule))
+        room.add_schedule(schedule)
         self.room_service.edit(room)
 
     def delete(self, room_id, schedule_id):
