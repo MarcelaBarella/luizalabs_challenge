@@ -181,8 +181,8 @@ Return all the schedules for a given room. Each schedule has the following conte
 | id | string | id of a schedule, use it to retrieve the content of a given schedule |
 | title | string | the title gived for the schedule to briefly explain the reason of it |
 | participants | list | a list of strings with the name of the participants in a meeting |
-| begin | string | the date of the beginning of a meeting. Example: "25-06-2018  |
-| end | string | the date of the ending of a meeting. Example: "25-06-2018"  |
+| begin | epoch | the date of the beginning of a meeting. Example: "25-06-2018  |
+| end | epoch | the date of the ending of a meeting. Example: "25-06-2018"  |
 
 **Example of usage:**
 
@@ -291,13 +291,23 @@ PUT /room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
 
 **cURL**
 ```
+curl -X PUT \
+  http://localhost:9080/room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52 \
+  -H 'content-type: application/json' \
+  -d '{
+    "title": "coffee break",
+    "participants": ["Marcela", "Ricardo", "Camila"],
+    "begin": "22/06/2018 - 16:00",
+    "end": "22/06/2018 - 17:00",
+}'
 ```
 
 **Response**
 ```
+204 NO CONTENT
 ```
 
-## Add a Schedule in a Room  POST - /room/<room_id>/schedule
+## Add a Schedule to a Room:  POST - /room/<room_id>/schedule
 Used to create a schedulein a given room.
 
 Currently, the allowed parameters are:
@@ -316,15 +326,24 @@ Currently, the allowed parameters are:
 POST /room/5b292b83d2a3fa00b8290b51/schedule
 
 {
-    "title": "invetidors meeting",
-    "articipants": ["Pamela", "Claudio", "Paulo", "Ana"],
-    "begin": "27/08/2018 - 15:30",
-    "end": "22/08/2018 - 17:45",
+    "title": "investors meeting",
+    "participants": ["Pamela", "Claudio", "Paulo", "Ana"],
+    "begin": "27/08/2018 15:30",
+    "end": "27/08/2018 17:45",
 }
 ```
 
 **cURL**
 ```
+curl -X POST \
+  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule \
+  -H 'content-type: application/json' \
+  -d '{
+    "title": "investors meeting",
+    "participants": ["Pamela", "Claudio", "Paulo", "Ana"],
+    "begin": "27/08/2018 15:30",
+    "end": "27/08/2018 17:45",
+}'
 ```
 
 **Response**
@@ -344,16 +363,14 @@ DELETE /room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
 
 **cURL**
 ```
+curl -X DELETE \
+  http://localhost/room/5b292b83d2a3fa00b8290b51/schedule/5b292bfdd2a3fa00b8290b52
 ```
 
 **Response**
 ```
 200 OK
 ```
-
-## Searching for a Schedule date GET - /room/<room_id>/schedule/<schedule_id>
-
-## Searching for a Schedule Room - GET - 
 
 
 
